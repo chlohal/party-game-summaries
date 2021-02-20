@@ -107,7 +107,7 @@
 
 #open-more-info {
     transform: scaleY(1);
-    box-shadow: 0 0 0.125em #0005;
+    box-shadow: 0 0 1em #0005;
 }
 
 #open-more-info > div {
