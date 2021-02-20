@@ -14,7 +14,6 @@
     transition: background-color 0.5s, color 0.5s;
     cursor: pointer;
     background-color: #0000;
-    flex-wrap: wrap;
     position: relative;
 }
 
@@ -63,8 +62,16 @@
     width: auto;
 }
 
-.games-list li > div {
+.games-list li .game-stats {
     margin-left: auto;
+    display: flex;
+    justify-content: space-around;
+}
+
+.games-list li .game-stats > span {
+    display: flex;
+    align-items: center;
+    margin-left: 1em;
 }
 
 .games-list h3 {
@@ -72,5 +79,92 @@
     margin: 0;
     font-weight: normal;
     line-height: 1;
-    white-space: nowrap;
+    flex-basis: 50%;
+    flex-shrink: 1;
+    min-width: min-content;
+    text-overflow: ellipsis;
+    max-width: 50%;
+}
+
+.more-info {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    background-color: inherit;
+    padding: 1.25em;
+    border-radius: 20px;
+    z-index: 3;
+    transform: scaleY(0);
+    transform-origin: top center;
+    transition: opacity 0.25s, transform 0.25s;
+}
+
+.more-info > div {
+    opacity: 0;
+    transition: opacity 0.1s 0.25s, transform 0.1s 0.25s;
+}
+
+#open-more-info {
+    transform: scaleY(1);
+    box-shadow: 0 0 0.125em #0005;
+}
+
+#open-more-info > div {
+    opacity: 1;
+}
+
+#open-more-info p {
+    line-height: 1.6;
+}
+
+.has-open-more-info {
+    z-index: 2;
+}
+
+.categories li::after {
+    content: "";
+    opacity: 0;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    pointer-events: none;
+    box-shadow: inset 0 0 9999px #0009;
+    border-radius: 20px;
+}
+
+.categories li.has-open-more-info::after {
+    opacity: 1;
+}
+
+.info-subhead {
+    display: flex;
+    justify-content: space-evenly;
+    flex-wrap: 1;
+}
+
+.info-subhead span {
+    text-transform: uppercase;
+    font-weight: bolder;
+    letter-spacing: 0.1ch;
+    font-size: smaller;
+    color: #2d273ff0;
+    display: block;
+}
+
+.info-subhead .dataset {
+    flex-basis: 0;
+    min-width: max-content;
+    flex-grow: 1;
+    margin: 0 0.25em;
+    text-align: center;
+}
+
+.info-subhead .dataset .sparkline {
+    height: auto;
+    width: 10em;
+    max-width: 100%;
+    
 }

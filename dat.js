@@ -1,13 +1,17 @@
-var INFO_ICON_SVG = `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M12 2c5.514 0 10 4.486 10 10s-4.486 10-10 10-10-4.486-10-10 4.486-10 10-10zm0-2c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm-2.033 16.01c.564-1.789 1.632-3.932 1.821-4.474.273-.787-.211-1.136-1.74.209l-.34-.64c1.744-1.897 5.335-2.326 4.113.613-.763 1.835-1.309 3.074-1.621 4.03-.455 1.393.694.828 1.819-.211.153.25.203.331.356.619-2.498 2.378-5.271 2.588-4.408-.146zm4.742-8.169c-.532.453-1.32.443-1.761-.022-.441-.465-.367-1.208.164-1.661.532-.453 1.32-.442 1.761.022.439.466.367 1.209-.164 1.661z"/></svg>`;
+var INFO_ICON_SVG = `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M12 2c5.514 0 10 4.486 10 10s-4.486 10-10 10-10-4.486-10-10 4.486-10 10-10zm0-2c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm-2.033 16.01c.564-1.789 1.632-3.932 1.821-4.474.273-.787-.211-1.136-1.74.209l-.34-.64c1.744-1.897 5.335-2.326 4.113.613-.763 1.835-1.309 3.074-1.621 4.03-.455 1.393.694.828 1.819-.211.153.25.203.331.356.619-2.498 2.378-5.271 2.588-4.408-.146zm4.742-8.169c-.532.453-1.32.443-1.761-.022-.441-.465-.367-1.208.164-1.661.532-.453 1.32-.442 1.761.022.439.466.367 1.209-.164 1.661z"/></svg>`,
+    HEART_ICON_SVG = `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M6.28 3c3.236.001 4.973 3.491 5.72 5.031.75-1.547 2.469-5.021 5.726-5.021 2.058 0 4.274 1.309 4.274 4.182 0 3.442-4.744 7.851-10 13-5.258-5.151-10-9.559-10-13 0-2.676 1.965-4.193 4.28-4.192zm.001-2c-3.183 0-6.281 2.187-6.281 6.192 0 4.661 5.57 9.427 12 15.808 6.43-6.381 12-11.147 12-15.808 0-4.011-3.097-6.182-6.274-6.182-2.204 0-4.446 1.042-5.726 3.238-1.285-2.206-3.522-3.248-5.719-3.248z"/></svg>`,
+    STAR_ICON_SVG = `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M12 5.173l2.335 4.817 5.305.732-3.861 3.71.942 5.27-4.721-2.524-4.721 2.525.942-5.27-3.861-3.71 5.305-.733 2.335-4.817zm0-4.586l-3.668 7.568-8.332 1.151 6.064 5.828-1.48 8.279 7.416-3.967 7.416 3.966-1.48-8.279 6.064-5.827-8.332-1.15-3.668-7.569z"/></svg>`;
 
-function genInfoIconSvg(color) {
-    return INFO_ICON_SVG.replace("path d", `path style="fill:${color}" d`);
+function genColoredIconSvg(icon, color) {
+    return icon.replace("path d", `path style="fill:${color}" d`);
 }
 
 
 var jackboxGameHistory = [{"game":"Skribbl","date":"2021-02-18"},{"game":"Skribbl","date":"2021-01-30"},{"game":"Skribbl","date":"2021-01-29"},{"game":"Skribbl","date":"2021-01-22"},{"game":"Skribbl","date":"2021-01-16"},{"game":"Skribbl","date":"2021-01-07"},{"game":"Skribbl","date":"2021-01-01"},{"game":"Skribbl","date":"2020-12-31"},{"game":"Skribbl","date":"2020-12-31"},{"game":"Skribbl","date":"2020-12-30"},{"game":"Skribbl","date":"2020-12-30"},{"game":"Skribbl","date":"2020-12-29"},{"game":"Skribbl","date":"2020-12-28"},{"game":"Skribbl","date":"2020-12-26"},{"game":"Skribbl","date":"2020-12-26"},{"game":"Skribbl","date":"2020-12-26"},{"game":"Skribbl","date":"2020-12-25"},{"game":"Skribbl","date":"2020-12-25"},{"game":"Skribbl","date":"2020-12-25"},{"game":"Skribbl","date":"2020-12-25"},{"game":"Skribbl","date":"2020-06-14"},{"game":"Skribbl","date":"2020-06-12"},{"game":"Skribbl","date":"2020-06-12"},{"game":"Skribbl","date":"2020-06-06"},{"game":"Skribbl","date":"2020-06-06"},
         {"game":"Codenames","date":"2021-02-16"},{"game":"Codenames","date":"2021-02-15"},{"game":"Codenames","date":"2021-02-15"},{"game":"Codenames","date":"2021-01-30"},{"game":"Codenames","date":"2021-01-29"},{"game":"Codenames","date":"2021-01-26"},{"game":"Codenames","date":"2021-01-24"},{"game":"Codenames","date":"2021-01-23"},{"game":"Codenames","date":"2021-01-22"},{"game":"Codenames","date":"2021-01-21"},{"game":"Codenames","date":"2021-01-20"},{"game":"Codenames","date":"2021-01-20"},{"game":"Codenames","date":"2021-01-19"},{"game":"Codenames","date":"2021-01-19"},{"game":"Codenames","date":"2021-01-18"},{"game":"Codenames","date":"2021-01-18"},{"game":"Codenames","date":"2021-01-17"},
         {"game":"PushTheButtonGame","date":"2021-02-19"},{"game":"quiplash3Game","date":"2021-02-18"},{"game":"BlankyBlankGame","date":"2021-02-18"},{"game":"WorldChampionsGame","date":"2021-02-18"},{"game":"TriviaDeath2Game","date":"2021-02-16"},{"game":"TriviaDeath2Game","date":"2021-02-16"},{"game":"RidictionaryGame","date":"2021-02-16"},{"game":"MonsterMingleGame","date":"2021-02-15"},{"game":"STIGame","date":"2021-02-14"},{"game":"PushTheButtonGame","date":"2021-02-14"},{"game":"DrawfulGame","date":"2021-02-14"},{"game":"TriviaDeath2Game","date":"2021-02-13"},{"game":"TriviaDeath2Game","date":"2021-02-12"},{"game":"DrawfulGame","date":"2021-02-12"},{"game":"DrawfulGame","date":"2021-01-26"},{"game":"STIGame","date":"2021-01-26"},{"game":"RapBattleGame","date":"2021-01-18"},{"game":"WorldChampionsGame","date":"2021-01-18"},{"game":"RapBattleGame","date":"2021-01-16"},{"game":"RapBattleGame","date":"2021-01-16"},{"game":"WorldChampionsGame","date":"2021-01-16"},{"game":"quiplash3Game","date":"01-7-2021"},{"game":"MonsterMingleGame","date":"01-7-2021"},{"game":"TriviaDeath2Game","date":"01-7-2021"},{"game":"BRKGame","date":"01-1-2021"},{"game":"quiplash3Game","date":"01-1-2021"},{"game":"TriviaDeath2Game","date":"01-1-2021"},{"game":"BlankyBlankGame","date":"2020-12-30"},{"game":"TriviaDeath2Game","date":"2020-12-30"},{"game":"DrawfulGame","date":"2020-12-30"},{"game":"BlankyBlankGame","date":"2020-12-30"},{"game":"quiplash3Game","date":"2020-12-30"},{"game":"WorldChampionsGame","date":"2020-12-25"},{"game":"RoleModelsGame","date":"2020-11-23"},{"game":"RapBattleGame","date":"11-9-2020"},{"game":"RapBattleGame","date":"11-9-2020"},{"game":"quiplash3Game","date":"2020-10-28"},{"game":"BlankyBlankGame","date":"2020-10-28"},{"game":"BlankyBlankGame","date":"2020-10-28"},{"game":"EverydayGame","date":"2020-10-28"}];
+
+var gameRatings = { "Drawful 2": [3, 10],"Skribbl": [3.2, 10],"Codenames": [3.4, 10],"Blather 'Round": [2.75, 8],"Talking Points": [1.833333333, 6],"Champ'd Up": [3, 9],"The Devils and the Details": [2.428571429, 7],"Quiplash 3": [3.1, 10],"Push The Button": [3.555555556, 9],"Dictionarium": [1.857142857, 7],"Joke Boat": [1.428571429, 7],"Role Models": [1.8, 5],"Trivia Murder Party 2": [3.9, 10],"Patently Stupid": [3.1, 10],"Zeeple Dome": [1.5, 4],"Mad Verse City": [2.857142857, 7],"Split the Room": [2.428571429, 7],"You Don't Know Jack: Full Stream": [1.25, 4],"Civic Doodle": [2.285714286, 7],"Bracketeering": [2.8, 10],"Monster Seeking Monster": [3.5, 10],"Survive the Internet": [3.555555556, 9],"Fibbage 3": [2.7, 10],"Tee K.O.": [3.3, 10],"Fakin' It": [2.875, 8],"Guesspionage": [2.857142857, 7],"Trivia Murder Party": [3.5, 10],"Quiplash 2": [3.3, 10],"Bomb Corp.": [2.75, 4],"Quiplash XL": [3.625, 8],"Bidiots": [2.8, 5],"Earwax": [2, 4],"Fibbage 2": [2.555555556, 9],"Fibbage XL": [3.142857143, 7],"Lie Swatter": [2, 6],"Word Spud": [1.75, 4],"Drawful": [2.428571429, 7],"You Don't Know Jack 2015": [1, 4]  };
 
 var games = [
     {
@@ -148,7 +152,7 @@ var games = [
     {
       "type": "Jackbox",
       "program": "Party Pack 4",
-      "description": "Fibbage 3 is for 2-8 players and is the third game of the Fibbage series. The game includes new interactivity with the audience by letting them add their own lies to the selection. The game has a new separate game mode called Fibbage: Enough About You that replaces the game's traditional questions with questions relating to the players.[17]\n",
+      "description": "Fibbage 3 is for 2-8 players and is the third game of the Fibbage series. The game includes new interactivity with the audience by letting them add their own lies to the selection. The game has a new separate game mode called Fibbage: Enough About You that replaces the game's traditional questions with questions relating to the players.\n",
       "title": "Fibbage 3",
       "series": "Fibbage",
       "seriesIndex": 3,
@@ -195,9 +199,9 @@ var games = [
       "program": "Party Pack 5",
       "description": "You Don't Know Jack: Full Stream is for 1-8 players, and it is the newest iteration of the series of the same name. The game is updated to feature similar streaming-friendly features as most other Party Pack games. This includes support for up to eight players and an audience. As the game now uses both mobile devices and computers as a controller, the text-based questions like the Gibberish Question return, new and classic question types are present.\n",
       "title": "You Don't Know Jack: Full Stream",
-      "series": "You Don't Know Jack: Full Stream",
-      "seriesIndex": 1,
-      "jackboxPastGameTypeId": "YouDontKnowJack:FullStreamGame"
+      "series": "You Don't Know Jack",
+      "seriesIndex": 2,
+      "jackboxPastGameTypeId": "YouDontKnowJackFullStreamGame"
     },
     {
       "type": "Jackbox",
@@ -211,7 +215,7 @@ var games = [
     {
       "type": "Jackbox",
       "program": "Party Pack 5",
-      "description": "Mad Verse City is for 3-8 players. Players use giant robots trying to out-rap their opponents. In each round, players are given who they are trying to out-rap, and use their device to fill in various prompts given to them. The game then runs through each rap using a text-to-speech voice, and players give points to the rap that they feel is the best.[20]\n",
+      "description": "Mad Verse City is for 3-8 players. Players use giant robots trying to out-rap their opponents. In each round, players are given who they are trying to out-rap, and use their device to fill in various prompts given to them. The game then runs through each rap using a text-to-speech voice, and players give points to the rap that they feel is the best.\n",
       "title": "Mad Verse City",
       "series": "Mad Verse City",
       "seriesIndex": 1,
@@ -220,7 +224,7 @@ var games = [
     {
       "type": "Jackbox",
       "program": "Party Pack 5",
-      "description": "Zeeple Dome is for 1-6 players and has up to six players play as contestants in an alien combat arena, the Zeeple Dome, to take down other aliens. The game is physics based, and has players slingshot their characters across the game's levels, cooperatively working together to eliminate enemies and gain power-ups for their team.[21]\n",
+      "description": "Zeeple Dome is for 1-6 players and has up to six players play as contestants in an alien combat arena, the Zeeple Dome, to take down other aliens. The game is physics based, and has players slingshot their characters across the game's levels, cooperatively working together to eliminate enemies and gain power-ups for their team.\n",
       "title": "Zeeple Dome",
       "series": "Zeeple Dome",
       "seriesIndex": 1,

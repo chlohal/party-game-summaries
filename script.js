@@ -3,7 +3,9 @@ var categories = {};
 var catsParent = document.getElementById("parent");
 
 
-
+window.addEventListener("click", function(event) {
+    closeMoreInfo();
+});
 
 for (var i = games.length - 1; i >= 0; i--) {
     var game = games[i];
@@ -37,33 +39,103 @@ function createCategory(catName) {
     catGames.classList.add("games-list");
     catElem.appendChild(catGames);
 
+    var moreInfo = document.createElement("div");
+    moreInfo.classList.add("more-info");
+    moreInfo.setAttribute("aria-hidden", "true");
+
+    var moreInfoData = document.createElement("div");
+
+    var moreInfoHeader = document.createElement("h2");
+    moreInfoData.appendChild(moreInfoHeader);
+
+    var moreInfoSubhead = document.createElement("p");
+    moreInfoSubhead.classList.add("info-subhead");
+    moreInfoData.appendChild(moreInfoSubhead);
+
+    var moreInfoParagraph = document.createElement("p");
+    moreInfoData.appendChild(moreInfoParagraph);
+
+    moreInfo.appendChild(moreInfoData);
+
+    catElem.appendChild(moreInfo);
+
     return {
         elem: catElem,
         list: catGames,
-        hue: catIndex * 24
+        hue: catIndex * 24,
+        moreInfo: moreInfo,
+        infoElements: {
+            dataParent: moreInfoData,
+            header: moreInfoHeader,
+            desc: moreInfoParagraph,
+            subhead: moreInfoSubhead
+        }
     };
 }
 
 function addGameListItem(category, game) {
     var gameElem = document.createElement("li");
 
+    gameElem.addEventListener("click", function(event) {
+        event.stopPropagation();
+        event.preventDefault();
+        openMoreInfo(category, game);
+    });
+
+    var color = `hsl(${category.hue}, 80%, 20%)`;
+
     var openModalButton = document.createElement("button");
     openModalButton.setAttribute("aria-label", "See more information");
-    openModalButton.innerHTML = genInfoIconSvg(`hsl(${category.hue}, 80%, 20%)`);
+    openModalButton.innerHTML = genColoredIconSvg(INFO_ICON_SVG, color);
 
     var nameElem = document.createElement("h3");
     nameElem.textContent = game.title;
 
-    var playFreqSparkline = document.createElement("div");
-    playFreqSparkline.innerHTML = createSparklineSvg(game, category);
+    var stats = document.createElement("div");
+    stats.classList.add("game-stats");
+
+    var stars = document.createElement("span");
+    stars.setAttribute("title", "Game's rating (out of 5)");
+    stars.innerHTML = genColoredIconSvg(STAR_ICON_SVG, color) + `<span>${(Math.round(gameRatings[game.title][0]*10)/10)}</span>`;
+    stats.appendChild(stars);
+
+    var sparkline = document.createElement("span");
+    sparkline.innerHTML = game._sparkline = createSparklineSvg(game, category);
+    stats.appendChild(sparkline);
 
     gameElem.appendChild(openModalButton);
     gameElem.appendChild(nameElem);
-    gameElem.appendChild(playFreqSparkline);
+    gameElem.appendChild(stats);
 
     category.list.appendChild(gameElem);
 }
 
+function closeMoreInfo() {
+    var previouslyOpenMoreInfo = document.getElementById("open-more-info");
+    if(previouslyOpenMoreInfo) {
+        previouslyOpenMoreInfo.id = "";
+        previouslyOpenMoreInfo.setAttribute("aria-hidden", "true");
+        previouslyOpenMoreInfo.parentElement.classList.remove("has-open-more-info");
+    }
+}
+
+function openMoreInfo(category, game) {
+    var previouslyOpenMoreInfo = document.getElementById("open-more-info");
+    if(previouslyOpenMoreInfo) {
+        previouslyOpenMoreInfo.id = "";
+        previouslyOpenMoreInfo.setAttribute("aria-hidden", "true");
+        previouslyOpenMoreInfo.parentElement.classList.remove("has-open-more-info");
+    }
+
+    category.moreInfo.id = "open-more-info";
+    category.moreInfo.setAttribute("aria-hidden", "false");
+    category.elem.classList.add("has-open-more-info");
+
+    category.infoElements.header.textContent = game.title;
+    category.infoElements.subhead.innerHTML = `<div class="dataset"><span>Average Star Rating</span>${Math.round(gameRatings[game.title][0]*10)/10} (${gameRatings[game.title][1]} ratings)</div>
+                                               <div class="dataset"><span>Popularity over time</span>${game._sparkline}</div>`
+    category.infoElements.desc.textContent = game.description;
+}
 
 function createSparklineSvg(game, category) {
     var chartSize = {
@@ -95,10 +167,10 @@ function createSparklineSvg(game, category) {
         path += "L" + xCoord + "," + yCoord
     }
 
-    return `<svg xmlns="http://www.w3.org/2000/svg" role="img" width="${chartSize.x}" height="${chartSize.y}" 
+    return `<svg class="sparkline" xmlns="http://www.w3.org/2000/svg" role="img" width="${chartSize.x}" height="${chartSize.y}" 
         viewBox="0 0 ${chartSize.x} ${chartSize.y}"
         aria-labelledby="sparkline${game.jackboxPastGameTypeId || game.title}Title sparkline${game.jackboxPastGameTypeId || game.title}Desc">
-        <title id="sparkline${game.jackboxPastGameTypeId || game.title}Title">Game's popularity</title>
+        <title id="sparkline${game.jackboxPastGameTypeId || game.title}Title">Game's popularity over time</title>
         <desc id="sparkline${game.jackboxPastGameTypeId || game.title}Desc">${describeData(data, chartSize)}</desc>
         <defs>
             <linearGradient id="gradient-${category.hue}" x1="0" x2="0" y1="0" y2="1">
