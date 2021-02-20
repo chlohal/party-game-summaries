@@ -148,7 +148,7 @@
 .info-subhead span {
     text-transform: uppercase;
     font-weight: bolder;
-    letter-spacing: 0.1ch;
+    letter-spacing: -0.05ch;
     font-size: smaller;
     color: #2d273ff0;
     display: block;

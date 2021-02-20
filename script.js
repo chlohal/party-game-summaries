@@ -3,7 +3,7 @@ var categories = {};
 var catsParent = document.getElementById("parent");
 
 
-window.addEventListener("click", function(event) {
+window.addEventListener("click", function (event) {
     closeMoreInfo();
 });
 
@@ -40,6 +40,9 @@ function createCategory(catName) {
     catElem.appendChild(catGames);
 
     var moreInfo = document.createElement("div");
+    moreInfo.addEventListener("click", function (event) {
+        event.stopPropagation();
+    });
     moreInfo.classList.add("more-info");
     moreInfo.setAttribute("aria-hidden", "true");
 
@@ -76,7 +79,7 @@ function createCategory(catName) {
 function addGameListItem(category, game) {
     var gameElem = document.createElement("li");
 
-    gameElem.addEventListener("click", function(event) {
+    gameElem.addEventListener("click", function (event) {
         event.stopPropagation();
         event.preventDefault();
         openMoreInfo(category, game);
@@ -96,12 +99,21 @@ function addGameListItem(category, game) {
 
     var stars = document.createElement("span");
     stars.setAttribute("title", "Game's rating (out of 5)");
-    stars.innerHTML = genColoredIconSvg(STAR_ICON_SVG, color) + `<span>${(Math.round(gameRatings[game.title][0]*10)/10)}</span>`;
-    stats.appendChild(stars);
+    stars.innerHTML = addPath(
+        insertMask(
+            genColoredIconSvg(FIVE_STARS_ICON_SVG, color), 
+            `<mask id="${(game.jackboxPastGameTypeId||game.title) + gameRatings[game.title][0]}" maskContentUnits="objectBoundingBox">
+                <rect fill="black" x="${gameRatings[game.title][0]/5}" y="0" width="100%" height="100%" />
+                <rect fill="white" x="0" y="0" width="${gameRatings[game.title][0]/5}" height="1" />
+                
+            </mask>`,
+            (game.jackboxPastGameTypeId||game.title) + gameRatings[game.title][0]
+        ),
+        genColoredIconSvg(FIVE_STAR_PATH, `hsla(${category.hue}, 80%, 20%, 0.25)`)
 
-    var sparkline = document.createElement("span");
-    sparkline.innerHTML = game._sparkline = createSparklineSvg(game, category);
-    stats.appendChild(sparkline);
+    );
+
+    stats.appendChild(stars);
 
     gameElem.appendChild(openModalButton);
     gameElem.appendChild(nameElem);
@@ -112,7 +124,7 @@ function addGameListItem(category, game) {
 
 function closeMoreInfo() {
     var previouslyOpenMoreInfo = document.getElementById("open-more-info");
-    if(previouslyOpenMoreInfo) {
+    if (previouslyOpenMoreInfo) {
         previouslyOpenMoreInfo.id = "";
         previouslyOpenMoreInfo.setAttribute("aria-hidden", "true");
         previouslyOpenMoreInfo.parentElement.classList.remove("has-open-more-info");
@@ -121,7 +133,7 @@ function closeMoreInfo() {
 
 function openMoreInfo(category, game) {
     var previouslyOpenMoreInfo = document.getElementById("open-more-info");
-    if(previouslyOpenMoreInfo) {
+    if (previouslyOpenMoreInfo) {
         previouslyOpenMoreInfo.id = "";
         previouslyOpenMoreInfo.setAttribute("aria-hidden", "true");
         previouslyOpenMoreInfo.parentElement.classList.remove("has-open-more-info");
@@ -132,8 +144,9 @@ function openMoreInfo(category, game) {
     category.elem.classList.add("has-open-more-info");
 
     category.infoElements.header.textContent = game.title;
-    category.infoElements.subhead.innerHTML = `<div class="dataset"><span>Average Star Rating</span>${Math.round(gameRatings[game.title][0]*10)/10} (${gameRatings[game.title][1]} ratings)</div>
-                                               <div class="dataset"><span>Popularity over time</span>${game._sparkline}</div>`
+    category.infoElements.subhead.innerHTML =
+        `<div class="dataset"><span>Average Star Rating</span>${Math.round(gameRatings[game.title][0] * 10) / 10} (${gameRatings[game.title][1]} ratings)</div>
+         <div class="dataset"><span>Popularity over time</span>${game._sparkline || (game._sparkline = createSparklineSvg(game, category))}</div>`
     category.infoElements.desc.textContent = game.description;
 }
 
@@ -160,7 +173,7 @@ function createSparklineSvg(game, category) {
         var xCoord = (i - chartStartDay) / (currentDay - chartStartDay) * chartSize.x;
         var yCoord = calculateSparklinePoint(game, i, chartSize);
 
-        data.push(1 - (yCoord - chartSize.yMargin) / (chartSize.y - chartSize.yMargin*2));
+        data.push(1 - (yCoord - chartSize.yMargin) / (chartSize.y - chartSize.yMargin * 2));
 
         if (yCoord == chartSize.y) continue;
 
@@ -188,34 +201,34 @@ function describeData(data) {
 
     var explaination = `A line graph, starting at ${describePercentInGraph(data[0])}`;
 
-    for(var i = 1; i < data.length; i++) {
+    for (var i = 1; i < data.length; i++) {
         var delta = data[i] - data[lastExplainedIndex];
-        if(Math.abs(delta) > 0.1) {
+        if (Math.abs(delta) > 0.1) {
             lastExplainedIndex = i;
             explained++;
 
             var lastDeltaIsSameDirection = lastDelta !== null && (delta > 0) == (lastDelta > 0)
 
             explaination += ", "
-                + (delta>0?"growing":"dropping")
-                + ((delta < 0.2 && data[i] != 0) ? 
+                + (delta > 0 ? "growing" : "dropping")
+                + ((delta < 0.2 && data[i] != 0) ?
                     " a bit" +
                     (lastDeltaIsSameDirection ? " more" : "")
-                : 
-                    " to " 
+                    :
+                    " to "
                     + describePercentInGraph(data[i]))
                 + " "
                 + describeXCoordInGraph(i + 0.5, data.length);
 
             lastDelta = delta;
         }
-        
+
     }
 
     var lastIdx = explaination.lastIndexOf(", ");
 
-    if(explained > 0) explaination = explaination.substring(0, lastIdx) 
-        + (explained < 2 ? " and " : ", and ") 
+    if (explained > 0) explaination = explaination.substring(0, lastIdx)
+        + (explained < 2 ? " and " : ", and ")
         + explaination.substring(lastIdx + 2);
     else explaination += " and staying there until the end"
 
