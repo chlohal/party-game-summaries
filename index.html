@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta http-equiv="Content-type" content="text/html;charset=UTF-8">
+
+    <title>Party Games</title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <meta name="description" content="Party Games!" />
+
+    <link rel="stylesheet" href="./style.css">
+
+    <meta name="theme-color" content="#EBF9FE" />
+
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Abril+Fatface&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+        body {
+            margin: 0;
+            width: 150ch;
+            max-width: 100vw;
+            margin: auto;
+            text-rendering: optimizeLegibility;
+            background: #CDC7E5;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            padding: 0.5em;
+        }
+        h1,h2 {
+            font-family: 'Abril Fatface', cursive;
+            font-weight: normal;
+            margin-top: 0;
+            color: #231D35f0;
+        }
+        h1 {
+            font-size: 4em;
+            
+            text-align: center;
+        }
+        .categories {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(20em, 1fr));
+            grid-gap: 1em;
+            gap: 1em;
+            justify-content: center;
+            margin: 1em 0;
+        }
+        .categories > li {
+            flex-grow: 1;
+            display: block;
+            padding: 1.25em;
+            border-radius: 20px;
+            box-shadow:  0.25em 0.25em 0.5em #3333,
+             -0.25em -0.25em 0.5em #d6cff1ff;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>Party Games</h1>
+    <ul class="categories" id="parent">
+
+    </ul>
+
+    <script src="dat.js"></script>
+    <script src="script.js"></script>
+</body>
+
+</html>
